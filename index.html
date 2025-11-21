@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pendaftaran Osis</title>
+  <link rel="stylesheet" href="beranda.css">
+</head>
+<body>
+  <aside class="sidebar" aria-label="Beranda Samping">
+    <div class="brand-title"></div>
+
+    <div class="card">
+      <!-- Logo -->
+      <div class="logo-wrap">
+        <!-- You can replace the src below with your real logo file -->
+        <img class="logo" src=foto/osis.png alt="logo" />
+      </div>
+      <p class="tagline">“Ayo bergabung dengan OSIS dan jadi bagian dari perubahan!”</p>
+      <!-- Carousel: group photos that auto-rotate and can be controlled -->
+      <div class="carousel" id="carousel" aria-roledescription="carousel">
+        <!-- Use the uploaded image as example slides; replace with your own images as needed -->
+        <img data-src="foto/foto1.jpeg" alt="Foto 1" class="slide active">
+        <img data-src="foto/foto2.jpeg" alt="Foto 2" class="slide">
+        <img data-src="foto/foto3.jpeg" alt="Foto 3" class="slide">
+
+        <!-- navigation dots -->
+        <div class="dots" id="dots" aria-hidden="false"></div>
+      </div>
+
+      <!-- Register button -->
+      <a href="daftar.html" class="cta">Daftar Sekarang</a>
+
+      <div class="footer">
+        <div class="socials" aria-label="Ikon Sosial">
+          <!-- Facebook -->
+          <a href="https://web.facebook.com/share/p/1ac7VkwaJa/" target="_blank" target="_blank" rel="noopener" title="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 6.477 17.523 2 12 2S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.99H7.898v-2.888h2.54V9.797c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.888h-2.33v6.99C18.343 21.128 22 16.991 22 12z" fill="#1877F2"/></svg>
+          </a>
+
+          <!-- YouTube -->
+          <a href="https://youtube.com/@osissmktribintang7186?si=EsTF16E9QS_YWDpU" target="_blank" rel="noopener" title="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.5 6.203a2.9 2.9 0 00-2.045-2.045C19.755 3.5 12 3.5 12 3.5s-7.755 0-9.455.658A2.9 2.9 0 00.5 6.203 30.02 30.02 0 000 12a30.02 30.02 0 00.5 5.797 2.9 2.9 0 002.045 2.045C4.245 20.5 12 20.5 12 20.5s7.755 0 9.455-.658a2.9 2.9 0 002.045-2.045A30.02 30.02 0 0024 12a30.02 30.02 0 00-.5-5.797zM9.75 15.02V8.98l6.25 3.02-6.25 3.02z" fill="#FF0000"/></svg>
+          </a>
+
+          <!-- Instagram (clickable to a different link) -->
+          <a id="instagramLink" href="https://www.instagram.com/osissmktribintang?igsh=MWoyOHF3ZHltd24zMg==" target="_blank" rel="noopener" title="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 6.6a4.4 4.4 0 100 8.8 4.4 4.4 0 000-8.8zm5.2-.9a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z" fill="#E1306C"/></svg>
+          </a>
+        </div>
+        <div class="small-note">Yuk Follow Sosial Media Kami!</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Minimal JS for carousel and behavior -->
+  <script>
+    (function(){
+      const slideEls = Array.from(document.querySelectorAll('.carousel .slide'));
+      const dotsEl = document.getElementById('dots');
+      const carousel = document.getElementById('carousel');
+      let current = 0;
+      let interval = null;
+      const INTERVAL_MS = 3500;
+
+      // lazy load images from data-src
+      slideEls.forEach((img,i)=>{ img.src = img.dataset.src; });
+
+      // create dots
+      slideEls.forEach((s, i)=>{
+        const b = document.createElement('button');
+        b.setAttribute('aria-label', 'Slide '+(i+1));
+        if(i===0) b.classList.add('active');
+        b.addEventListener('click', ()=>{ goTo(i); restart(); });
+        dotsEl.appendChild(b);
+      });
+
+      function setActive(index){
+        slideEls.forEach((img,i)=> img.classList.toggle('active', i===index));
+        Array.from(dotsEl.children).forEach((d,i)=> d.classList.toggle('active', i===index));
+      }
+
+      function goTo(i){ current = (i+slideEls.length) % slideEls.length; setActive(current); }
+      function next(){ goTo(current+1); }
+
+      function start(){ interval = setInterval(next, INTERVAL_MS); }
+      function stop(){ clearInterval(interval); interval=null; }
+      function restart(){ stop(); start(); }
+
+      // start autoplay when visible
+      start();
+
+      // pause on hover for accessibility
+      carousel.addEventListener('mouseenter', stop);
+      carousel.addEventListener('mouseleave', start);
+
+      // keyboard navigation
+      document.addEventListener('keydown', (e)=>{
+        if(e.key==='ArrowLeft') { goTo(current-1); restart(); }
+        if(e.key==='ArrowRight') { goTo(current+1); restart(); }
+      });
+
+      // Example: if you want to change instagram link dynamically, set a new href here
+      // document.getElementById('instagramLink').href = 'https://instagram.com/yourpage';
+
+      // Make carousel accessible: announce slide changes
+      let liveRegion = document.createElement('div');
+      liveRegion.setAttribute('aria-live','polite');
+      liveRegion.style.position='absolute'; liveRegion.style.left='-9999px';
+      document.body.appendChild(liveRegion);
+      setInterval(()=>{ liveRegion.textContent = 'Slide '+(current+1)+' dari '+slideEls.length; }, 1200);
+
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Seleksi OSIS</title>
+
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #dfe9f3, #ffffff);
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 780px;
+        margin: auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        border: 1px solid #e6e6e6;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+    label {
+        font-weight: 600;
+        display: block;
+        margin-top: 15px;
+        color: #444;
+        font-size: 15px;
+    }
+
+    select, input, textarea {
+        width: 100%;
+        padding: 14px;
+        margin-top: 6px;
+        border-radius: 10px;
+        border: 1.5px solid #bfc7d1;
+        font-size: 14px;
+        background: #fafafa;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    select:focus, input:focus, textarea:focus {
+        border-color: #4a90e2;
+        background: #fff;
+    }
+
+    textarea {
+        height: 110px;
+        resize: vertical;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 25px;
+        padding: 15px;
+        border: none;
+        background: linear-gradient(135deg, #4CAF50, #1b8f3a);
+        color: white;
+        font-size: 17px;
+        font-weight: 600;
+        border-radius: 12px;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
+
+    .success {
+        margin-top: 18px;
+        padding: 14px;
+        background: #dbffe0;
+        color: #1c7a2d;
+        border-radius: 10px;
+        display: none;
+        font-weight: 600;
+        text-align: center;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <h2>Formulir Seleksi OSIS</h2>
+
+    <label for="jurusan">Pilih Jurusan:</label>
+    <select id="jurusan">
+        <option value="">-- Pilih Jurusan --</option>
+        <option value="TBSM">TBSM</option>
+        <option value="TKJ">TKJ</option>
+        <option value="TKR">TKR</option>
+        <option value="AKL">AKL</option>
+    </select>
+
+    <label for="nama">Nama Lengkap:</label>
+    <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+
+    <label>1. Apa alasan kamu ingin bergabung dengan OSIS dan apa yang ingin kamu capai?</label>
+    <textarea id="q1"></textarea>
+
+    <label>2. Pengalaman apa yang menunjukkan kemampuan kepemimpinan dan tanggung jawabmu?</label>
+    <textarea id="q2"></textarea>
+
+    <label>3. Bagaimana kamu menyelesaikan masalah atau konflik?</label>
+    <textarea id="q3"></textarea>
+
+    <label>4. Program atau ide kreatif apa yang ingin kamu usulkan untuk OSIS?</label>
+    <textarea id="q4"></textarea>
+
+    <label>5. Bagaimana kamu membagi waktu antara OSIS dan akademik?</label>
+    <textarea id="q5"></textarea>
+
+    <label>6. Apa pemahamanmu tentang peran OSIS di sekolah?</label>
+    <textarea id="q6"></textarea>
+
+    <button onclick="kirimForm()">Kirim ke WhatsApp</button>
+
+    <div class="success" id="notif">
+        Formulir berhasil disiapkan! WhatsApp akan terbuka.
+    </div>
+</div>
+
+<script>
+function kirimForm() {
+    let jurusan = document.getElementById("jurusan").value;
+    let nama = document.getElementById("nama").value;
+
+    let q1 = document.getElementById("q1").value;
+    let q2 = document.getElementById("q2").value;
+    let q3 = document.getElementById("q3").value;
+    let q4 = document.getElementById("q4").value;
+    let q5 = document.getElementById("q5").value;
+    let q6 = document.getElementById("q6").value;
+
+    if (jurusan === "" || nama === "") {
+        alert("Jurusan dan nama wajib diisi!");
+        return;
+    }
+
+    let pesan =
+`FORM PENDAFTARAN OSIS
+-----------------------------
+Nama: ${nama}
+Jurusan: ${jurusan}
+
+1. Alasan gabung OSIS:
+${q1}
+
+2. Pengalaman kepemimpinan:
+${q2}
+
+3. Menyelesaikan konflik:
+${q3}
+
+4. Ide kreatif:
+${q4}
+
+5. Manajemen waktu:
+${q5}
+
+6. Pemahaman tentang OSIS:
+${q6}
+`;
+
+    let encoded = encodeURIComponent(pesan);
+
+    let nomor = "6283146648103"; // GANTI DENGAN NOMOR TUJUAN
+
+    window.open(`https://wa.me/${nomor}?text=${encoded}`, "_blank");
+
+    // Setelah 1.5 detik → buka halaman terimakasih
+    setTimeout(()=>{
+        window.location.href = "terimakasih.html";
+    }, 1500);
+
+}
+</script>
+
+</body>
+</html>
